@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <title>案例轮播图</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 左箭头 -->
+        <a href="javascript:void(0)" v-show="index!=0" @click="prev"> 上一张 </a>
+        <!-- 图片 -->
+        <img :src="imgArr[index]" alt="" width="250" height="150">
+        <!-- 右箭头 -->
+        <a href="javascript:void(0)" v-show="index<imgArr.length-1" @click="next"> 下一张 </a>
+    </div>
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                imgArr: [
+                    "./resource/image/ancient one 2.jpg",
+                    "./resource/image/captain american1.jpg",
+                    "./resource/image/doctor strange1.jpg",
+                    "./resource/image/hulk.jpg",
+                    "./resource/image/iron man2.jpg",
+                    "./resource/image/spider man2.jpg",
+                ],
+                index:0
+            },
+            methods:{
+                prev:function(){
+                    this.index--;
+                },
+                next:function(){
+                    this.index++;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

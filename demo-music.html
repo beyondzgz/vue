@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>案例音乐播放器</title>
+</head>
+
+<!-- 搜歌API：https://autumnfish.cn/search?keywords=海阔天空 -->
+<!-- 获歌API：https://autumnfish.cn/song/url?id=11127 -->
+
+<body>
+    <div id="app">
+        <p>
+            <input type="text" v-model="music" @keyup.enter="search(music)">
+            <button>查询</button>
+        </p>
+        <p>
+            <a href="javascript:void(0)" @click="search('海阔天空')">海阔天空</a>
+            <a href="javascript:void(0)" @click="search('真的爱你')">真的爱你</a>
+            <a href="javascript:void(0)" @click="search('再见理想')">再见理想</a>
+        </p>
+        <audio :src="url" controls autoplay loop></audio>
+        <p>
+        <ul>
+            <li v-for="(v,k) in arr">
+                <a href="javascript:void(0);" @click=play(v.id)>{{v.name}}</a>
+            </li>
+        </ul>
+        </p>
+    </div>
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                music: '',
+                arr: [],
+                url:''
+            },
+            methods: {
+                search: function (music) {
+                    var that = this;
+                    axios.get("https://autumnfish.cn/search?keywords=" + music).then(function (res) {
+                        console.log(res.data.result.songs);
+                        that.arr = res.data.result.songs;
+                    }).catch(function (err) {
+                        alert(err);
+                    });
+                },
+                play:function(id){
+                    var that = this;
+                    axios.get("https://autumnfish.cn/song/url?id=" + id).then(function (res) {
+                        // console.log(res.data.data[0].url);
+                        console.log(res.data.data.url);
+                        // that.url = res.data.data.url;
+                        // 随便放个链接
+                        that.url="https://m801.music.126.net/20211128182800/8d3975f77b604c374a7d411212a33144/jdyyaac/obj/w5rDlsOJwrLDjj7CmsOj/11469317931/864c/c7b6/9bda/106f0bd35b4093405c498985bfba3ae7.m4a";
+                    }).catch(function (err) {
+                        alert(err);
+                    });
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

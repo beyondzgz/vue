@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>案例天气预报</title>
+</head>
+
+<!-- http://wthrcdn.etouch.cn/weather_mini?city=北京 -->
+
+<body>
+    <div id="app">
+        <p>
+            <input type="text" v-model="city" @keyup.enter="search(city)">
+            <button>查询</button>
+        </p>
+        <p>
+            <a href="javascript:void(0)" @click="search('北京')">北京</a>
+            <a href="javascript:void(0)" @click="search('无锡')">无锡</a>
+            <a href="javascript:void(0)" @click="search('抚顺')">抚顺</a>
+        </p>
+        <p>
+        <ul>
+            <li v-for="(v,k) in arr">
+                {{v.date}} {{v.type}} {{v.high}} ~ {{v.low}}
+            </li>
+        </ul>
+        </p>
+    </div>
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                city: '',
+                arr: []
+            },
+            methods: {
+                search: function (city) {
+                    var that = this;
+                    axios.get("http://wthrcdn.etouch.cn/weather_mini?city=" + city).then(function (res) {
+                        console.log(res.data.data.forecast);
+                        that.arr = res.data.data.forecast;
+                    }).catch(function (err) {
+                        alert(err);
+                    });
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
